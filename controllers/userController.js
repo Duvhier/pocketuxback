@@ -38,6 +38,8 @@ const postMozart = async (req, res) => {
 
 const postDemo = async (req, res) => {
   const datos = req.body;    
+  console.log("DATOS: ", datos)
+
   const axios_url = "https://hook.us1.make.com/3uh3nnblj1j2ffrtyph9k9ldt19y03x9";
   const dataToSend = datos.body;
 
