@@ -4,6 +4,22 @@ const getMozart = (req, res) => {
   res.send('API para Mozart');
 };
 
+const postLogin = async (req, res) => {
+  const datos = req.body;
+  console.log("LOGIN: ", datos);
+
+  let user = "feliperodriguezjar@gmail.com";
+  let pass = "admin";
+
+  if (datos.email === user && datos.password === pass) {
+    res.json({ status: "Bienvenido", user: datos.email, role: "admin"});
+  } else {
+    res.json({ status: "Error" });
+  }
+};
+
+
+
 const postMozart = async (req, res) => {
   const datos = req.body;
 
@@ -63,5 +79,6 @@ const postDemo = async (req, res) => {
 module.exports = {
   getMozart,
   postMozart,
-  postDemo
+  postDemo,
+  postLogin
 };
