@@ -3,6 +3,7 @@ const axios = require('axios');
 const CryptoJS = require("crypto-js");
 const moment = require('moment-timezone');
 
+
 const getMozart = (req, res) => {
   res.send('API para Mozart');
 };
@@ -34,7 +35,30 @@ const postLogin = async (req, res) => {
 };
 
 
-//---------------API para Mozart---------------------
+//------------- API para recibir de Make---------------------
+const postMake = async (req, res) => {
+  const datos = req.body;
+  
+  try{
+    //const users =  await pool.db('pocketux').collection('users').find().toArray()
+    //console.log("USERS: ", users);
+    const registro =  await pool.db('pocketux').collection('make_responses').insertOne(datos);
+    if (registro) {
+      // Obtener la fecha y hora actual en formato Bogotá
+      //const currentDateTime = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
+      // Almacenar en la colección log_login
+      //await pool.db('pocketux').collection('log_login').insertOne({ email: datos.email, role: login.role, date: currentDateTime });
+      res.json({ status: "RegistroAlmacenado"});
+    } else {
+      res.json({ status: "ErrorCreandoRegistro" });
+    }
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ status: "Error", message: "Internal Server Error" });
+  }
+};
+
+//---------------API para recibir Mozart---------------------
 const postMozart = async (req, res) => {
   const datos = req.body;
 
@@ -108,5 +132,6 @@ module.exports = {
   getMozart,
   postMozart,
   postDemo,
-  postLogin
+  postLogin,
+  postMake
 };
