@@ -38,12 +38,11 @@ const postLogin = async (req, res) => {
 //------------- API para recibir de Make---------------------
 const postMake = async (req, res) => {
   const datos = req.body;
-  
+  console.log("DATA: ", datos);  
   try{
-    //const users =  await pool.db('pocketux').collection('users').find().toArray()
-    //console.log("USERS: ", users);
+    //const users =  await pool.db('pocketux').collection('users').find().toArray()    
     const registro =  await pool.db('pocketux').collection('make_responses').insertOne(datos);
-    if (registro) {
+    if (registro.acknowledged) {
       // Obtener la fecha y hora actual en formato Bogotá
       //const currentDateTime = moment().tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
       // Almacenar en la colección log_login
