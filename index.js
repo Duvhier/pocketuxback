@@ -10,18 +10,9 @@ app.use(express.json());
 
 //connectToDatabase();
 
-/* app.get('/', async (req, res) => {
-  try {
-    const db = await connectToDatabase();
-    const usersCollection = db.collection('users');
-    const users = await usersCollection.find().toArray();
-    console.log('Fetched users from MongoDB:', users);
-    res.send(users);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).send('Failed to fetch users from MongoDB');
-  }
-}); */
+app.get('/', async (req, res) => {
+  res.send("PocketUX");
+}); 
 
 const userRoutes = require('./routes/userRoutes');
 app.use('/api', userRoutes);

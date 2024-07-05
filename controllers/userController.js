@@ -48,8 +48,10 @@ const postMake = async (req, res) => {
       // Almacenar en la colección log_login
       //await pool.db('pocketux').collection('log_login').insertOne({ email: datos.email, role: login.role, date: currentDateTime });
       res.json({ status: "RegistroAlmacenado"});
+      console.log("status: RegistroAlmacenado")
     } else {
       res.json({ status: "ErrorCreandoRegistro" });
+      console.log("status: ErrorCreandoRegistro")
     }
   } catch (error) {
     console.error('Error fetching user:', error);
