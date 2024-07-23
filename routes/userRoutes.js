@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-router.get('/mozart', userController.getMozart);
-router.post('/mozart', userController.postMozart);
-router.post('/make', userController.postMake);
+router.post('/client', userController.postClient);
 router.post('/demo', userController.postDemo);
 router.post('/login', userController.postLogin);
+router.post('/make', userController.postMake);
 
 module.exports = router;

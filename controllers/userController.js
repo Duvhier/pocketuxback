@@ -4,10 +4,6 @@ const CryptoJS = require("crypto-js");
 const moment = require('moment-timezone');
 
 
-const getMozart = (req, res) => {
-  res.send('API para Mozart');
-};
-
 
 //---------------Login---------------------
 const postLogin = async (req, res) => {
@@ -59,16 +55,29 @@ const postMake = async (req, res) => {
   }
 };
 
-//---------------API para recibir Mozart---------------------
-const postMozart = async (req, res) => {
+//---------------API para recibir del cliente---------------------
+const postClient = async (req, res) => {
   const datos = req.body;
 
-  let user = "jmosquera@mozart.co";
-  let pass = "1234567";
+  const { user, pass, request } = datos;
 
-  if (datos.username === user && datos.password === pass) {
-    
-    const axios_url = "https://hook.us1.make.com/7jwrztb8acl3bs3sox4dxtc25922z5hb";
+  try {
+    // Buscar en la colección 'endpoints' si el usuario y la contraseña existen
+    const endpoint = await pool.db('pocketux').collection('endpoints').findOne({ user: user, pass: pass });
+
+    if (!endpoint) {
+      res.status(401).send("Error de credenciales");
+      return;
+    }
+
+    // Validar el estado del usuario
+    if (endpoint.status !== "active") {
+      res.status(403).send("Usuario no activo");
+      return;
+    }
+
+    // Enviar el contenido del campo 'request' a la URL contenida en el campo 'url'
+    const axios_url = endpoint.url;
 
     const config = {
       headers: {
@@ -77,20 +86,20 @@ const postMozart = async (req, res) => {
       timeout: 5000
     };
 
-    const dataToSend = datos.body;
-
     try {
-      const response = await axios.post(axios_url, dataToSend, config);
+      const response = await axios.post(axios_url, request, config);
       console.log('Respuesta del servidor:', response.data);
       res.send(response.data); // Enviar la respuesta de vuelta al cliente
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
       res.status(500).send('Error al enviar la solicitud');
     }
-  } else {
-    res.status(401).send("ERROR TOKEN");
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).json({ status: "Error", message: "Internal Server Error" });
   }
 };
+
 
 
 //---------------API para envio DEMO a MAKE---------------------
@@ -130,8 +139,7 @@ const postDemo = async (req, res) => {
 };
 
 module.exports = {
-  getMozart,
-  postMozart,
+  postClient,
   postDemo,
   postLogin,
   postMake
