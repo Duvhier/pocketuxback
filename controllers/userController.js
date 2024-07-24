@@ -66,13 +66,13 @@ const postClient = async (req, res) => {
     const endpoint = await pool.db('pocketux').collection('endpoints').findOne({ user: user, pass: pass });
 
     if (!endpoint) {
-      res.status(401).send("Error de credenciales");
+      res.status(401).send("Usuario no existe");
       return;
     }
 
     // Validar el estado del usuario
     if (endpoint.status !== "active") {
-      res.status(403).send("Usuario no activo");
+      res.status(403).send("Usuario Inactivo");
       return;
     }
 
