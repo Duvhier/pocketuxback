@@ -11,7 +11,7 @@ app.use(express.json());
 //connectToDatabase();
 
 app.get('/', async (req, res) => {
-  res.send("PocketUX");
+  res.send("ganacomoloco");
 }); 
 
 const userRoutes = require('./routes/userRoutes');
